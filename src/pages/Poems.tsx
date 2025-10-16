@@ -39,8 +39,6 @@ export default function Poems() {
 
   return (
     <div className="content-wrapper">
-      <h1 className="text-center">Poetry Collection</h1>
-      
       <div className="filter-group">
         {topics.map((topic) => (
           <button

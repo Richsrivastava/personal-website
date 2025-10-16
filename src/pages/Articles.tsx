@@ -13,8 +13,6 @@ export default function Articles() {
 
   return (
     <div className="content-wrapper">
-      <h1 className="text-center mb-8">Writing</h1>
-      
       <div className="filter-group">
         {topics.map(topic => (
           <button
