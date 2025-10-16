@@ -7,6 +7,7 @@ import Github from './pages/Github'
 import Poems from './pages/Poems'
 import PoemDetail from './pages/PoemDetail'
 import Contact from './pages/Contact'
+import './portfolio_styles.css'
 
 export default function App() {
   return (

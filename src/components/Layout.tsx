@@ -3,10 +3,10 @@ import Footer from './Footer'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="app-layout">
       <Header />
-      <main className="ml-64 flex-1 flex flex-col">
-        <div className="flex-1 p-6">
+      <main className="main-content">
+        <div style={{ minHeight: 'calc(100vh - 80px)' }}>
           {children}
         </div>
         <Footer />

@@ -1,56 +1,81 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function Header() {
+  const location = useLocation()
+  
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/'
+    }
+    return location.pathname.startsWith(path)
+  }
+
   return (
-    <aside className="fixed top-0 left-0 h-full w-64 bg-gray-800 text-white p-6 flex flex-col z-50">
-      {/* Section 1: Site owner + primary navigation */}
-      <div>
-        <nav aria-label="Primary" className="flex flex-col gap-2">
-          <Link
-            to="/"
-            className="hover:bg-gray-700 rounded px-3 py-2 transition-colors block focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-          >
-            Home
-          </Link>
-          <Link
-            to="/articles"
-            className="hover:bg-gray-700 rounded px-3 py-2 transition-colors block focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-          >
-            Articles
-          </Link>
-          <Link
-            to="/poems"
-            className="hover:bg-gray-700 rounded px-3 py-2 transition-colors block focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-          >
-            Poetry
-          </Link>
-        </nav>
+    <aside className="sidebar">
+      {/* Header Section */}
+      <div className="sidebar-header">
+        <h1 className="sidebar-title">Richa Srivastava</h1>
+        <p className="sidebar-subtitle">Engineering & AI Leader</p>
       </div>
 
-      {/* Divider */}
-      <div className="my-6 border-t border-white/10" />
+      {/* Primary Navigation */}
+      <nav className="sidebar-nav" aria-label="Primary">
+        <Link
+          to="/"
+          className={isActive('/') && !isActive('/articles') && !isActive('/poems') ? 'active' : ''}
+        >
+          Home
+        </Link>
+        <Link
+          to="/articles"
+          className={isActive('/articles') ? 'active' : ''}
+        >
+          Articles
+        </Link>
+        <Link
+          to="/poems"
+          className={isActive('/poems') ? 'active' : ''}
+        >
+          Poetry
+        </Link>
+      </nav>
 
-      {/* Section 2: External links */}
-      <div>
-        <h2 className="text-sm uppercase tracking-wide text-gray-300 mb-3">
-          Find me on
+      {/* Divider */}
+      <div style={{ borderTop: '1px solid var(--border)', margin: '1rem 1.5rem' }} />
+
+      {/* External Links Section */}
+      <div style={{ padding: '0 1.5rem' }}>
+        <h2 style={{ 
+          fontSize: '0.75rem', 
+          textTransform: 'uppercase', 
+          letterSpacing: '0.05em', 
+          color: 'var(--text-secondary)',
+          marginBottom: '0.75rem',
+          fontWeight: 600
+        }}>
+          Connect
         </h2>
-        <nav aria-label="Social" className="flex flex-col gap-2">
+        <nav className="sidebar-nav" aria-label="Social" style={{ padding: 0 }}>
           <a
-            href={"https://github.com/Richsrivastava"}
+            href="https://github.com/Richsrivastava"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:bg-gray-700 rounded px-3 py-2 transition-colors block focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
             GitHub
           </a>
           <a
-            href={"https://www.linkedin.com/in/richa-a-srivastava"}
+            href="https://www.linkedin.com/in/richa-a-srivastava"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:bg-gray-700 rounded px-3 py-2 transition-colors block focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
             LinkedIn
+          </a>
+          <a
+            href="https://twitter.com/Richauniverse"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Twitter
           </a>
         </nav>
       </div>

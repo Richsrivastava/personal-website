@@ -1,7 +1,16 @@
 export default function Footer() {
   return (
-    <footer className="bg-gray-200 p-4 text-center text-sm">
-      © {new Date().getFullYear()} My Personal Website
+    <footer style={{
+      borderTop: '1px solid var(--border)',
+      padding: '2rem',
+      textAlign: 'center',
+      fontSize: '0.875rem',
+      color: 'var(--text-secondary)',
+      background: 'var(--main-bg)'
+    }}>
+      <p style={{ margin: 0 }}>
+        © {new Date().getFullYear()} Richa Srivastava. All rights reserved.
+      </p>
     </footer>
   )
 }
