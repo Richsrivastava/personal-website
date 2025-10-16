@@ -23,7 +23,7 @@ export default function Home() {
       <section className="section">
         <h2>What Drives Me</h2>
         <ul>
-          <li><strong>Artificial Intelligence</strong> – where computation meets consciousness.</li>
+        
           <li><strong>Education Equity</strong> – every child learning freely, without limits.</li>
           <li><strong>Lifelong Learning</strong> – lessons from mentors, challenges, and everyday life.</li>
         </ul>
