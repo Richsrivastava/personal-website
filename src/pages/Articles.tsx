@@ -33,7 +33,7 @@ export default function Articles() {
             className="card block no-underline"
           >
             <div className="flex items-start justify-between mb-3">
-              <h3 className="text-xl font-semibold">{article.title}</h3>
+              <h3>{article.title}</h3>
               <span className="tag">{article.topic}</span>
             </div>
             <p className="mb-3">{article.summary}</p>

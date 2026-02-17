@@ -226,6 +226,38 @@ ul li:before {
   left: 0;
 }
 
+/* Article markdown lists (restore markers) */
+.content-body ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+
+.content-body ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+
+.content-body li {
+  margin: 0.25rem 0;
+  padding: 0;              /* undo your global ul li padding */
+  position: static;        /* undo relative positioning */
+}
+
+/* disable the global custom bullet inside articles */
+.content-body ul li:before {
+  content: none;
+}
+
+/* ArticleDetail title only (won't affect Home) */
+.article-detail .article-title {
+  font-size: 2.4rem;
+  line-height: 1.12;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0 0 0.75rem 0;
+}
+
 /* Links */
 a {
   color: var(--accent);
@@ -293,10 +325,17 @@ a:hover {
 }
 
 .content-body {
-  line-height: 1.8;
-  font-size: 1.0625rem;
+  max-width: 48rem;         /* like max-w-3xl */
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.65;
   color: var(--text-secondary);
 }
+
+.content-body .article-paragraph {
+  margin-bottom: 1rem;      /* same rhythm as Home */
+}
+
 
 /* Poetry specific */
 .poetry-content {

@@ -30,7 +30,7 @@ export default function Header() {
           to="/articles"
           className={isActive('/articles') ? 'active' : ''}
         >
-          Articles
+          Writing
         </Link>
         <Link
           to="/poems"
