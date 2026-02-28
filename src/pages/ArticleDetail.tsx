@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom"
+import { useEffect } from "react"
 import articles from "../data/articles.json"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -6,6 +7,62 @@ import remarkGfm from "remark-gfm"
 export default function ArticleDetail() {
   const { slug } = useParams()
   const article = articles.find((a) => a.slug === slug)
+
+  useEffect(() => {
+    if (!article) return
+
+    // Remove any existing schema tag
+    const existing = document.getElementById("article-schema")
+    if (existing) existing.remove()
+
+    // Build the schema object
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": article.title,
+      "description": article.summary,
+      "author": {
+        "@type": "Person",
+        "name": "Richa Srivastava",
+        "url": "https://richasrivastava.com"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Richa Srivastava",
+        "url": "https://richasrivastava.com"
+      },
+      "url": `https://richasrivastava.com/articles/${article.slug}`,
+      "mainEntityOfPage": `https://richasrivastava.com/articles/${article.slug}`,
+      "keywords": article.topic,
+      "articleSection": article.topic
+    }
+
+    // Inject schema into page head
+    const script = document.createElement("script")
+    script.id = "article-schema"
+    script.type = "application/ld+json"
+    script.text = JSON.stringify(schema)
+    document.head.appendChild(script)
+
+    // Also update page title and meta description
+    document.title = `${article.title} | Richa Srivastava`
+    const metaDesc = document.querySelector("meta[name='description']")
+    if (metaDesc) {
+      metaDesc.setAttribute("content", article.summary)
+    } else {
+      const meta = document.createElement("meta")
+      meta.name = "description"
+      meta.content = article.summary
+      document.head.appendChild(meta)
+    }
+
+    // Cleanup when leaving the page
+    return () => {
+      const tag = document.getElementById("article-schema")
+      if (tag) tag.remove()
+      document.title = "Richa Srivastava"
+    }
+  }, [article])
 
   if (!article) {
     return (
