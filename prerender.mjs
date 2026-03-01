@@ -10,15 +10,17 @@ const distDir = "dist/client";
 const indexHtml = readFileSync(join(distDir, "index.html"), "utf-8");
 
 // ── PATCH: Fix Cloudflare Vite plugin's generated wrangler config ──────────
-// The plugin hardcodes "single-page-application" which overrides pre-rendered
-// files. We patch it to "none" so static HTML files are served correctly.
 const generatedWranglerPath = "dist/personal_website/wrangler.json";
 const wranglerConfig = JSON.parse(readFileSync(generatedWranglerPath, "utf-8"));
 if (wranglerConfig.assets?.not_found_handling === "single-page-application") {
   wranglerConfig.assets.not_found_handling = "none";
-  writeFileSync(generatedWranglerPath, JSON.stringify(wranglerConfig), "utf-8");
   console.log("✓ Patched wrangler config: not_found_handling → none");
 }
+// Tell Cloudflare to run Worker code BEFORE checking static assets
+// This allows Worker routes (/articles/:slug, /poems/:slug) to intercept requests
+wranglerConfig.assets.run_worker_first = true;
+writeFileSync(generatedWranglerPath, JSON.stringify(wranglerConfig), "utf-8");
+console.log("✓ Patched wrangler config: run_worker_first → true");
 // ──────────────────────────────────────────────────────────────────────────
 
 // Load data
@@ -84,6 +86,14 @@ const staticRoutes = ["/articles", "/poems", "/github", "/contact"];
 for (const route of staticRoutes) {
   writeRoute(route, indexHtml);
 }
+
+// Cache-bust: write a timestamp file to force Cloudflare to re-scan all assets
+writeFileSync(
+  join(distDir, "_build.txt"),
+  `Build timestamp: ${new Date().toISOString()}\n`,
+  "utf-8"
+);
+console.log("✓ Cache-bust file written");
 
 console.log("\n✅ Pre-rendering complete. Static HTML files written to dist/");
 console.log("   Google, LinkedIn, and other crawlers can now index your content.");
