@@ -12,9 +12,7 @@ app.get("/articles/:slug", (c) => {
   const article = articles.find((a) => a.slug === slug);
 
   if (!article) {
-    return c.html(`<!DOCTYPE html>
-<html><head><meta http-equiv="refresh" content="0; url=/" /></head>
-<body>Loading...</body></html>`);
+    return c.env.ASSETS.fetch(c.req.raw);
   }
 
   const title = `${article.title} | Richa Srivastava`;
@@ -69,9 +67,7 @@ app.get("/poems/:slug", (c) => {
   const poem = poems.find((p) => p.slug === slug);
 
   if (!poem) {
-    return c.html(`<!DOCTYPE html>
-<html><head><meta http-equiv="refresh" content="0; url=/" /></head>
-<body>Loading...</body></html>`);
+    return c.env.ASSETS.fetch(c.req.raw);
   }
 
   const title = `${poem.title} | Richa Srivastava`;
@@ -106,11 +102,9 @@ app.get("/poems/:slug", (c) => {
 </html>`);
 });
 
-// Fallback for all other routes — serve SPA shell
+// All other routes — pass through to static assets
 app.get("*", (c) => {
-  return c.html(`<!DOCTYPE html>
-<html><head><meta http-equiv="refresh" content="0; url=/" /></head>
-<body>Loading...</body></html>`);
+  return c.env.ASSETS.fetch(c.req.raw);
 });
 
 export default app;
