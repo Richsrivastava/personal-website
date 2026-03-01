@@ -2,6 +2,16 @@ import { Hono } from "hono";
 import articles from "../../src/data/articles.json";
 import poems from "../../src/data/poems.json";
 
+// These values are automatically updated by prerender.mjs after each build
+// Do not edit manually — they will be overwritten on next npm run build
+const jsFile = "assets/index-C9DEsdeH.js";
+const cssFile = "assets/index-DjOGqgRd.css";
+
+function assetTags() {
+  return `    <script type="module" crossorigin src="/${jsFile}"></script>
+    <link rel="stylesheet" crossorigin href="/${cssFile}">`;
+}
+
 const app = new Hono<{ Bindings: Env }>();
 
 app.get("/api/", (c) => c.json({ name: "Cloudflare" }));
@@ -52,8 +62,7 @@ app.get("/articles/:slug", (c) => {
       "keywords": article.topic,
       "articleSection": article.topic
     })}</script>
-    <script type="module" crossorigin src="/assets/index-DQ6thtcK.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Baj4uMbM.css">
+${assetTags()}
   </head>
   <body>
     <div id="root"></div>
@@ -93,8 +102,7 @@ app.get("/poems/:slug", (c) => {
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="${title}" />
     <meta name="twitter:description" content="${description}" />
-    <script type="module" crossorigin src="/assets/index-DQ6thtcK.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Baj4uMbM.css">
+${assetTags()}
   </head>
   <body>
     <div id="root"></div>
@@ -108,3 +116,4 @@ app.get("*", (c) => {
 });
 
 export default app;
+

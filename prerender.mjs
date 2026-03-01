@@ -87,7 +87,26 @@ for (const route of staticRoutes) {
   writeRoute(route, indexHtml);
 }
 
-// Cache-bust: write a timestamp file to force Cloudflare to re-scan all assets
+// ── EXTRACT ASSET HASHES: patch worker with correct filenames ──────────────
+const manifestPath = "dist/client/.vite/manifest.json";
+if (existsSync(manifestPath)) {
+  const clientManifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
+  const manifestValues = Object.values(clientManifest);
+  const jsEntry = manifestValues.find((f) => f.isEntry);
+  const jsFile = jsEntry?.file ?? "assets/index.js";
+  const cssFile = jsEntry?.css?.[0] ?? "assets/index.css";
+
+  const workerPath = "src/worker/index.ts";
+  let workerSrc = readFileSync(workerPath, "utf-8");
+  workerSrc = workerSrc
+    .replace(/const jsFile = "assets\/index-[^"]+\.js"/, `const jsFile = "${jsFile}"`)
+    .replace(/const cssFile = "assets\/index-[^"]+\.css"/, `const cssFile = "${cssFile}"`);
+  writeFileSync(workerPath, workerSrc, "utf-8");
+  console.log(`✓ Asset hashes updated in worker: ${jsFile}, ${cssFile}`);
+} else {
+  console.log("⚠ manifest.json not found — skipping asset hash update (enable build.manifest in vite.config.ts)");
+}
+// ────────────────────────────────────────────────────────────────────────────
 writeFileSync(
   join(distDir, "_build.txt"),
   `Build timestamp: ${new Date().toISOString()}\n`,
