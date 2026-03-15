@@ -18,6 +18,7 @@ if (wranglerConfig.assets?.not_found_handling === "single-page-application") {
 }
 // Tell Cloudflare to run Worker code BEFORE checking static assets
 // This allows Worker routes (/articles/:slug, /poems/:slug) to intercept requests
+
 wranglerConfig.assets.run_worker_first = true;
 writeFileSync(generatedWranglerPath, JSON.stringify(wranglerConfig), "utf-8");
 console.log("✓ Patched wrangler config: run_worker_first → true");
@@ -107,12 +108,38 @@ if (existsSync(manifestPath)) {
   console.log("⚠ manifest.json not found — skipping asset hash update (enable build.manifest in vite.config.ts)");
 }
 // ────────────────────────────────────────────────────────────────────────────
+
 writeFileSync(
   join(distDir, "_build.txt"),
   `Build timestamp: ${new Date().toISOString()}\n`,
   "utf-8"
 );
 console.log("✓ Cache-bust file written");
+
+// ── GENERATE SITEMAP ────────────────────────────────────────────────────────
+const baseUrl = "https://richasrivastava.com";
+const today = new Date().toISOString().split("T")[0];
+
+const articleUrls = articles.map(a =>
+  `  <url><loc>${baseUrl}/articles/${a.slug}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`
+).join("\n");
+
+const poemUrls = poems.map(p =>
+  `  <url><loc>${baseUrl}/poems/${p.slug}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>`
+).join("\n");
+
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>${baseUrl}/</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>${baseUrl}/articles</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>${baseUrl}/poems</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+${articleUrls}
+${poemUrls}
+</urlset>`;
+
+writeFileSync(join(distDir, "sitemap.xml"), sitemap, "utf-8");
+console.log("✓ sitemap.xml written");
+// ────────────────────────────────────────────────────────────────────────────
 
 console.log("\n✅ Pre-rendering complete. Static HTML files written to dist/");
 console.log("   Google, LinkedIn, and other crawlers can now index your content.");

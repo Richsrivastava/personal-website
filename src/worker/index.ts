@@ -4,7 +4,7 @@ import poems from "../../src/data/poems.json";
 
 // These values are automatically updated by prerender.mjs after each build
 // Do not edit manually — they will be overwritten on next npm run build
-const jsFile = "assets/index-tXz3ZRzp.js";
+const jsFile = "assets/index-Cd7Nscl2.js";
 const cssFile = "assets/index-DjOGqgRd.css";
 
 function assetTags() {
@@ -66,6 +66,11 @@ ${assetTags()}
   </head>
   <body>
     <div id="root"></div>
+    <article id="ssr-content" style="display:none" aria-hidden="true">
+      <h1>${article.title}</h1>
+      <p>${article.summary}</p>
+      <div>${article.content ?? ""}</div>
+    </article>
   </body>
 </html>`);
 });
@@ -104,8 +109,12 @@ app.get("/poems/:slug", (c) => {
     <meta name="twitter:description" content="${description}" />
 ${assetTags()}
   </head>
-  <body>
+   <body>
     <div id="root"></div>
+    <article id="ssr-content" style="display:none" aria-hidden="true">
+      <h1>${poem.title}</h1>
+      <p>${poem.title}</p>
+    </article>
   </body>
 </html>`);
 });
