@@ -1,8 +1,21 @@
 import { useParams, Link } from "react-router-dom"
 import { useEffect } from "react"
-import articles from "../data/articles.json"
+import articlesData from "../data/articles.json"
+const articles = articlesData as Article[]
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+
+interface Article {
+  slug: string;
+  title: string;
+  topic: string;
+  publishedDate?: string;
+  linkedInPostUrl: string | null;
+  heroImage: string | null;
+  heroImageAlt: string | null;
+  summary: string;
+  content: string;
+}
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
