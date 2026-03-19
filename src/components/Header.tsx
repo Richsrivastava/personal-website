@@ -41,11 +41,11 @@ export default function Header() {
       </nav>
 
       {/* Divider */}
-      <div style={{ borderTop: '1px solid var(--border)', margin: '1rem 1.5rem' }} />
+      <div className="sidebar-divider" style={{ borderTop: '1px solid var(--border)', margin: '1rem 1.5rem' }} />
 
       {/* External Links Section */}
       <div style={{ padding: '0 1.5rem' }}>
-        <h2 style={{ 
+        <h2 className="connect-label" style={{ 
           fontSize: '0.75rem', 
           textTransform: 'uppercase', 
           letterSpacing: '0.05em', 
@@ -55,7 +55,7 @@ export default function Header() {
         }}>
           Connect
         </h2>
-        <nav className="sidebar-nav" aria-label="Social" style={{ padding: 0 }}>
+        <nav className="connect-links sidebar-nav" aria-label="Social" style={{ padding: 0 }}>
           <a
             href="https://github.com/Richsrivastava"
             target="_blank"

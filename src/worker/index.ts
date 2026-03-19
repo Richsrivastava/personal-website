@@ -4,8 +4,8 @@ import poems from "../../src/data/poems.json";
 
 // These values are automatically updated by prerender.mjs after each build
 // Do not edit manually — they will be overwritten on next npm run build
-const jsFile = "assets/index-Ce6o8Tiw.js";
-const cssFile = "assets/index-D0bATjP8.css";
+const jsFile = "assets/index-IwdgBw6p.js";
+const cssFile = "assets/index-9EXpc-n_.css";
 
 function assetTags() {
   return `    <script type="module" crossorigin src="/${jsFile}"></script>

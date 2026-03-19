@@ -32,7 +32,7 @@ export default function Articles() {
             to={`/articles/${article.slug}`}
             className="card block no-underline"
           >
-            <div className="flex items-start justify-between mb-3">
+            <div className="flex items-start justify-between mb-3 card-header-row">
               <h3>{article.title}</h3>
               <span className="tag">{article.topic}</span>
             </div>
