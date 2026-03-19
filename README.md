@@ -1,90 +1,89 @@
-# React + Vite + Hono + Cloudflare Workers
+# richasrivastava.com
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/vite-react-template)
+Personal portfolio and writing site for Richa Srivastava — Engineering & AI Leader.
 
-This template provides a minimal setup for building a React application with TypeScript and Vite, designed to run on Cloudflare Workers. It features hot module replacement, ESLint integration, and the flexibility of Workers deployments.
+Live at **[richasrivastava.com](https://richasrivastava.com)**
 
-![React + TypeScript + Vite + Cloudflare Workers](https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/fc7b4b62-442b-4769-641b-ad4422d74300/public)
+## What this is
 
-<!-- dash-content-start -->
+A professional portfolio site featuring:
 
-🚀 Supercharge your web development with this powerful stack:
+- **Writing** — long-form articles on enterprise AI, engineering leadership, and insurance technology
+- **Poetry** — creative writing
+- **GitHub** — project showcase
+- **Contact** — get in touch
 
-- [**React**](https://react.dev/) - A modern UI library for building interactive interfaces
-- [**Vite**](https://vite.dev/) - Lightning-fast build tooling and development server
-- [**Hono**](https://hono.dev/) - Ultralight, modern backend framework
-- [**Cloudflare Workers**](https://developers.cloudflare.com/workers/) - Edge computing platform for global deployment
+Articles are authored in a structured JSON format and rendered as markdown. The site is pre-rendered at build time for SEO — article pages get full Open Graph meta tags, schema.org structured data, and sitemap entries so they're indexable by Google and render correctly when shared on LinkedIn.
 
-### ✨ Key Features
+## Stack
 
-- 🔥 Hot Module Replacement (HMR) for rapid development
-- 📦 TypeScript support out of the box
-- 🛠️ ESLint configuration included
-- ⚡ Zero-config deployment to Cloudflare's global network
-- 🎯 API routes with Hono's elegant routing
-- 🔄 Full-stack development setup
-- 🔎 Built-in Observability to monitor your Worker
+| Layer | Technology |
+|---|---|
+| UI | React 19 + TypeScript |
+| Styling | Custom CSS + Tailwind utilities |
+| Routing | React Router v6 |
+| Markdown | react-markdown + remark-gfm |
+| Build | Vite 6 |
+| Hosting | Cloudflare Workers (edge) |
+| Pre-rendering | Custom `prerender.mjs` script |
 
-Get started in minutes with local development or deploy directly via the Cloudflare dashboard. Perfect for building modern, performant web applications at the edge.
+## Project structure
 
-<!-- dash-content-end -->
-
-## Getting Started
-
-To start a new project with this template, run:
-
-```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/vite-react-template
+```
+src/
+  components/       # Layout, Header, Footer
+  pages/            # Home, Articles, ArticleDetail, Poems, PoemDetail, Github, Contact
+  data/
+    articles.json   # Article content — slug, title, topic, publishedDate, content
+    poems.json      # Poem content
+  portfolio_styles.css
+  worker/           # Cloudflare Worker entry point
+public/
+  images/articles/  # Hero images for articles
+prerender.mjs       # SEO pre-rendering script — runs after vite build
 ```
 
-A live deployment of this template is available at:
-[https://react-vite-template.templates.workers.dev](https://react-vite-template.templates.workers.dev)
+## Adding an article
+
+Add a new entry to `src/data/articles.json`:
+
+```json
+{
+  "slug": "your-article-slug",
+  "title": "Article Title",
+  "topic": "Artificial Intelligence",
+  "publishedDate": "YYYY-MM",
+  "linkedInPostUrl": null,
+  "heroImage": null,
+  "heroImageAlt": null,
+  "summary": "2-3 sentence summary shown on listing page and in OG tags.",
+  "content": "Full article in markdown. Use **bold**, ## headers, and \\n for line breaks."
+}
+```
+
+Once you publish the article on LinkedIn, update `linkedInPostUrl` with the post URL (no tracking parameters) and redeploy — a "Continue the conversation" CTA will appear at the bottom of the article.
 
 ## Development
 
-Install dependencies:
-
 ```bash
 npm install
-```
-
-Start the development server with:
-
-```bash
 npm run dev
 ```
 
-Your application will be available at [http://localhost:5173](http://localhost:5173).
+Site runs at `http://localhost:5173`
 
-## Production
-
-Build your project for production:
+## Production build and deploy
 
 ```bash
-npm run build
+npm run build      # TypeScript compile + Vite build + prerender.mjs
+npm run deploy     # Deploy to Cloudflare Workers
 ```
 
-Preview your build locally:
+The build script automatically:
+- Pre-renders article and poem pages with full meta tags
+- Generates `sitemap.xml`
+- Patches the Cloudflare wrangler config for correct asset routing
 
-```bash
-npm run preview
-```
+## Deployment
 
-Deploy your project to Cloudflare Workers:
-
-```bash
-npm run build && npm run deploy
-```
-
-Monitor your workers:
-
-```bash
-npx wrangler tail
-```
-
-## Additional Resources
-
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-- [Vite Documentation](https://vitejs.dev/guide/)
-- [React Documentation](https://reactjs.org/)
-- [Hono Documentation](https://hono.dev/)
+Hosted on Cloudflare Workers. The Worker runs before static assets so dynamic routes (`/articles/:slug`, `/poems/:slug`) are handled correctly while static files are served from the edge.
