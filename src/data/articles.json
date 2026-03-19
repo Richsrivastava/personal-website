@@ -4,7 +4,7 @@
     "title": "The Data Engineer Should Have Come First",
     "topic": "Leadership",
     "publishedDate": "2026-03",
-    "linkedInPostUrl": null,
+    "linkedInPostUrl": "https://www.linkedin.com/posts/richa-a-srivastava_dataengineering-enterpriseai-aistrategy-activity-7440217286231212034-ruI8/",
     "heroImage": "/images/articles/Data_Scientist_Chef.png",
     "heroImageAlt": "Data Scientist in a chef's hat, standing in an empty kitchen with no plumbing or wiring",
     "summary": "When enterprise leaders build AI teams, they almost always hire data scientists first. That sequencing mistake — hiring for insight before hiring for infrastructure — is why so many AI initiatives stall between POC and production. Building an AI-ready organization requires a deliberate hiring order, and the data engineer comes first.",
