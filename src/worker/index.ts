@@ -2,10 +2,9 @@ import { Hono } from "hono";
 import articles from "../../src/data/articles.json";
 import poems from "../../src/data/poems.json";
 
-// These values are automatically updated by prerender.mjs after each build
-// Do not edit manually — they will be overwritten on next npm run build
-const jsFile = "assets/index-B2I5fYww.js";
-const cssFile = "assets/index-9EXpc-n_.css";
+// Asset filenames — stable names, no hashes (set in vite.config.ts)
+const jsFile = "assets/index.js";
+const cssFile = "assets/index.css";
 
 function assetTags() {
   return `    <script type="module" crossorigin src="/${jsFile}"></script>
@@ -109,7 +108,7 @@ app.get("/poems/:slug", (c) => {
     <meta name="twitter:description" content="${description}" />
 ${assetTags()}
   </head>
-   <body>
+  <body>
     <div id="root"></div>
     <article id="ssr-content" style="display:none" aria-hidden="true">
       <h1>${poem.title}</h1>
@@ -125,4 +124,3 @@ app.get("*", (c) => {
 });
 
 export default app;
-
