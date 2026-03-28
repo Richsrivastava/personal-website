@@ -82,5 +82,3 @@ Hosted on Vercel. Push to the main branch to trigger a deployment, or run:
 ```bash
 npx vercel --prod
 ```
-
-test test
