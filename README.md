@@ -1,67 +1,38 @@
 # richasrivastava.com
 
-Personal portfolio and writing site for Richa Srivastava — Engineering & AI Leader.
-
-Live at **[richasrivastava.com](https://richasrivastava.com)**
-
-## What this is
-
-A professional portfolio site featuring:
-
-- **Writing** — long-form articles on enterprise AI, engineering leadership, and insurance technology
-- **Poetry** — creative writing
-- **GitHub** — project showcase
-- **Contact** — get in touch
-
-Articles are authored in a structured JSON format and rendered as markdown. The site is pre-rendered at build time for SEO — article pages get full Open Graph meta tags, schema.org structured data, and sitemap entries so they're indexable by Google and render correctly when shared on LinkedIn.
+Personal site for Richa Srivastava — Engineering & AI Leader.
 
 ## Stack
 
 | Layer | Technology |
 |---|---|
-| UI | React 19 + TypeScript |
-| Styling | Custom CSS + Tailwind utilities |
-| Routing | React Router v6 |
-| Markdown | react-markdown + remark-gfm |
-| Build | Vite 6 |
-| Hosting | Cloudflare Workers (edge) |
-| Pre-rendering | Custom `prerender.mjs` script |
+| Framework | Next.js 15 (App Router, TypeScript) |
+| Markdown | gray-matter + unified/remark/rehype |
+| Styling | Plain CSS (globals.css) |
+| Hosting | Vercel |
 
 ## Project structure
 
 ```
+content/
+  articles/    ← one .md file per article
+  poems/       ← one .md file per poem
 src/
-  components/       # Layout, Header, Footer
-  pages/            # Home, Articles, ArticleDetail, Poems, PoemDetail, Github, Contact
-  data/
-    articles.json   # Article content — slug, title, topic, publishedDate, content
-    poems.json      # Poem content
-  portfolio_styles.css
-  worker/           # Cloudflare Worker entry point
-public/
-  images/articles/  # Hero images for articles
-prerender.mjs       # SEO pre-rendering script — runs after vite build
+  app/
+    layout.tsx
+    page.tsx             ← Home
+    writing/
+      page.tsx           ← Article list
+      [slug]/page.tsx    ← Article detail
+    poetry/
+      page.tsx           ← Poem list
+      [slug]/page.tsx    ← Poem detail
+    contact/page.tsx
+  components/
+    Header.tsx
+  lib/
+    content.ts           ← Markdown parsing helpers
 ```
-
-## Adding an article
-
-Add a new entry to `src/data/articles.json`:
-
-```json
-{
-  "slug": "your-article-slug",
-  "title": "Article Title",
-  "topic": "Artificial Intelligence",
-  "publishedDate": "YYYY-MM",
-  "linkedInPostUrl": null,
-  "heroImage": null,
-  "heroImageAlt": null,
-  "summary": "2-3 sentence summary shown on listing page and in OG tags.",
-  "content": "Full article in markdown. Use **bold**, ## headers, and \\n for line breaks."
-}
-```
-
-Once you publish the article on LinkedIn, update `linkedInPostUrl` with the post URL (no tracking parameters) and redeploy — a "Continue the conversation" CTA will appear at the bottom of the article.
 
 ## Development
 
@@ -70,20 +41,44 @@ npm install
 npm run dev
 ```
 
-Site runs at `http://localhost:5173`
+Site runs at `http://localhost:3000`
 
-## Production build and deploy
+## Adding an article
 
-```bash
-npm run build      # TypeScript compile + Vite build + prerender.mjs
-npm run deploy     # Deploy to Cloudflare Workers
+Create a new `.md` file in `content/articles/` with this frontmatter:
+
+```markdown
+---
+title: "Your Article Title"
+topic: Leadership
+publishedDate: "2026-04"
+linkedInPostUrl: null
+summary: "A 1–2 sentence summary shown on the listing page."
+---
+
+Your article body in Markdown...
 ```
 
-The build script automatically:
-- Pre-renders article and poem pages with full meta tags
-- Generates `sitemap.xml`
-- Patches the Cloudflare wrangler config for correct asset routing
+The slug is the filename without `.md`. Next.js picks it up automatically at build time — no code changes needed.
 
-## Deployment
+## Adding a poem
 
-Hosted on Cloudflare Workers. The Worker runs before static assets so dynamic routes (`/articles/:slug`, `/poems/:slug`) are handled correctly while static files are served from the edge.
+Create a new `.md` file in `content/poems/`:
+
+```markdown
+---
+title: "Your Poem Title"
+topic: Life
+---
+
+Your poem text here.
+Line breaks are preserved.
+```
+
+## Deploying
+
+Hosted on Vercel. Push to the main branch to trigger a deployment, or run:
+
+```bash
+npx vercel --prod
+```
